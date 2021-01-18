@@ -1,0 +1,5 @@
+- name: Run steps for registry setup
+  include: reg.yaml
+
+- name: Run steps for users setup
+  include: users.yaml
