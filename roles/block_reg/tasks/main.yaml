@@ -18,9 +18,12 @@
 
 - name: create pvc for reg storage
   command: oc create -f install-dir/reg-pvc.yaml -n image-registry-storage
+  ignore_errors: True
 
 - name: edit reg operator config for pvc
   command: oc patch config.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"storage":{"pvc":{"claim":"image-registry-storage"}}}}'
+  ignore_errors: True
 
 - name: Set registry to managed
   command: oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"managementState":"Managed"}}'
+  ignore_errors: True
