@@ -1,6 +1,9 @@
 - name: "update rollout strategy"
   command: oc patch config.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"rolloutStrategy":"Recreate","replicas":1}}'
 
+- name: Show current yaml for rolloutStrategy
+  command: oc describe config.imageregistry.operator.openshift.io/cluster
+
 - name: Create install-dir
   file: 
     path: "{{ playbook_dir }}/{{ item }}"
@@ -14,10 +17,10 @@
     dest: "{{ playbook_dir }}/install-dir/reg-pvc.yaml"
 
 - name: create pvc for reg storage
-  command: oc create -f install-dir/reg-pvc.yaml -n openshift-image-registry
+  command: oc create -f install-dir/reg-pvc.yaml -n image-registry-storage
 
 - name: edit reg operator config for pvc
-  command: oc patch config.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"storage":{"pvc":{"claim":"openshift-image-registry"}}}}'
+  command: oc patch config.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"storage":{"pvc":{"claim":"image-registry-storage"}}}}'
 
 - name: Set registry to managed
   command: oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"managementState":"Managed"}}'
