@@ -17,7 +17,7 @@
     dest: "{{ playbook_dir }}/install-dir/reg-pvc.yaml"
 
 - name: create pvc for reg storage
-  command: oc create -f install-dir/reg-pvc.yaml -n image-registry-storage
+  command: oc create -f install-dir/reg-pvc.yaml -n openshift-image-registry
   ignore_errors: True
 
 - name: edit reg operator config for pvc
